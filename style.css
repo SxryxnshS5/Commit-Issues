@@ -40,11 +40,19 @@ html, body {
 .dot.yellow { background: #ffbd2e; }
 .dot.green { background: #27c93f; }
 
+.titlegroup {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  min-width: 0;
+}
+
 .titletext {
   color: #7d7d7d;
   font-size: 13px;
-  flex: 1;
-  text-align: center;
+  white-space: nowrap;
 }
 
 .meta {
@@ -66,6 +74,41 @@ html, body {
   line-height: 1.6;
 }
 #themeBtn:hover { border-color: var(--accent); }
+
+#infoBtn {
+  background: none;
+  border: 1px solid #333;
+  color: #9a9a9a;
+  border-radius: 4px;
+  padding: 2px 9px;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1.6;
+}
+#infoBtn:hover { border-color: #777; color: #f0f0f0; }
+
+.gh-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  border: 1px solid #333;
+  border-radius: 5px;
+  color: #b7b7b7;
+  text-decoration: none;
+  font-size: 12.5px;
+  line-height: 1.6;
+  transition: border-color 0.15s ease, color 0.15s ease;
+}
+.gh-badge:hover { border-color: #777; color: #f0f0f0; }
+.gh-badge svg { flex-shrink: 0; }
+.gh-badge .gh-star {
+  color: #ffd24a;
+  font-size: 13px;
+  text-shadow: 0 0 6px rgba(255, 210, 74, 0.55);
+}
+.gh-badge:hover .gh-star { color: #ffdf7e; }
+.gh-badge .gh-count { color: #ffd24a; font-weight: 600; min-width: 8px; }
 
 #body {
   flex: 1;
@@ -272,6 +315,74 @@ html, body {
 #screen::-webkit-scrollbar { width: 10px; }
 #screen::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 6px; }
 #screen::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- info panel ---------- */
+
+#infoBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 15;
+  background: rgba(0, 0, 0, 0.6);
+}
+#infoBackdrop.hidden { display: none; }
+
+#infoPanel {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 16;
+  width: 92%;
+  max-width: 480px;
+  padding: 26px 26px 22px;
+  background: #161616;
+  border: 1px solid #2b2b2b;
+  border-radius: 12px;
+  box-shadow: 0 16px 44px rgba(0, 0, 0, 0.55);
+  font-family: inherit;
+}
+#infoPanel.hidden { display: none; }
+
+.overlay-close {
+  position: absolute;
+  top: 12px;
+  right: 14px;
+  background: none;
+  border: none;
+  color: #7d7d7d;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+}
+.overlay-close:hover { color: #f0f0f0; }
+
+.info-title {
+  color: var(--accent);
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.info-body { font-size: 13px; line-height: 1.65; color: #b0b0b0; }
+.info-body p { margin: 0 0 12px; }
+.info-body p:last-child { margin-bottom: 0; }
+
+.info-credit {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #262626;
+  font-size: 12.5px;
+  color: #9a9a9a;
+}
+.info-credit b { color: #e6e6e6; }
+.info-links { margin-left: 8px; }
+.info-links a {
+  color: var(--accent);
+  text-decoration: none;
+}
+.info-links a:hover { text-decoration: underline; }
+.info-links .dot-sep { color: #555; margin: 0 6px; }
 
 /* ---------- cookie consent banner ---------- */
 

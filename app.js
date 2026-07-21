@@ -393,6 +393,60 @@ function setupPanel(panelId, toggleId, storageKey) {
   }
 }
 
+// ---------- info panel ----------
+
+function setupInfoPanel() {
+  const btn = document.getElementById('infoBtn');
+  const panel = document.getElementById('infoPanel');
+  const backdrop = document.getElementById('infoBackdrop');
+  const closeBtn = document.getElementById('infoClose');
+  if (!btn || !panel || !backdrop || !closeBtn) return;
+
+  function open() {
+    panel.classList.remove('hidden');
+    backdrop.classList.remove('hidden');
+  }
+  function close() {
+    panel.classList.add('hidden');
+    backdrop.classList.add('hidden');
+    inputEl.focus();
+  }
+
+  btn.addEventListener('click', open);
+  closeBtn.addEventListener('click', close);
+  backdrop.addEventListener('click', close);
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !panel.classList.contains('hidden')) close();
+  });
+}
+
+// ---------- github star count ----------
+
+function formatStarCount(n) {
+  if (typeof n !== 'number') return '';
+  if (n >= 1000) return (n / 1000).toFixed(1).replace(/\.0$/, '') + 'k';
+  return String(n);
+}
+
+function loadGitHubStars() {
+  const el = document.getElementById('starCount');
+  if (!el) return;
+  try {
+    const cached = localStorage.getItem('commitIssuesStars');
+    if (cached) el.textContent = cached;
+  } catch (e) {}
+  fetch('https://api.github.com/repos/SxryxnshS5/Commit-Issues')
+    .then(r => (r.ok ? r.json() : Promise.reject(new Error('bad response'))))
+    .then(data => {
+      const formatted = formatStarCount(data.stargazers_count);
+      if (formatted) {
+        el.textContent = formatted;
+        try { localStorage.setItem('commitIssuesStars', formatted); } catch (e) {}
+      }
+    })
+    .catch(() => { /* offline, rate-limited, or blocked — badge still links out fine without a count */ });
+}
+
 // ---------- boot ----------
 
 (function init() {
@@ -403,6 +457,8 @@ function setupPanel(panelId, toggleId, storageKey) {
   setupPanel('leftPanel', 'leftToggle', 'commitIssuesLeftPanel');
   setupPanel('rightPanel', 'rightToggle', 'commitIssuesRightPanel');
   initCookieConsent();
+  setupInfoPanel();
+  loadGitHubStars();
   loadLevel(0);
   inputEl.focus();
 })();

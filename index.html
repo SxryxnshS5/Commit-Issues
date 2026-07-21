@@ -3,7 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>commit issues — git practice</title>
+<title>Commit Issues — practice real Git commands in your browser</title>
+<meta name="description" content="Commit Issues is a free, browser-based Git practice game. Solve realistic git scenarios — staging, committing, branching, merging, resolving conflicts, stashing, and safely undoing commits with reset and revert — in a real terminal-style interface. No install, no signup, no long tutorials." />
+<meta property="og:title" content="Commit Issues — practice real Git commands in your browser" />
+<meta property="og:description" content="A fast, browser-based Git practice game. Solve realistic git scenarios in a real terminal-style interface — no install, no signup, no tutorials." />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
 <link rel="stylesheet" href="style.css" />
 <!-- Analytics (GA4, Vercel Analytics, Microsoft Clarity) load only after cookie consent — see analytics.js -->
 </head>
@@ -11,11 +16,20 @@
 <div id="terminal">
   <div id="titlebar">
     <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
-    <div class="titletext">commit-issues — zsh — 80x24</div>
+    <div class="titlegroup">
+      <span class="titletext">commit-issues — zsh — 80x24</span>
+      <a id="githubLink" class="gh-badge" href="https://github.com/SxryxnshS5/Commit-Issues" target="_blank" rel="noopener noreferrer" title="Star commit-issues on GitHub">
+        <svg viewBox="0 0 16 16" width="14" height="14" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"></path></svg>
+        <span class="gh-label">Star</span>
+        <span class="gh-star">&#9733;</span>
+        <span id="starCount" class="gh-count"></span>
+      </a>
+    </div>
     <div class="meta">
       <span id="levelIndicator">Level 1/10</span>
       <span id="timer">00:00</span>
       <button id="themeBtn" title="Change accent color">&#9680;</button>
+      <button id="infoBtn" title="About this tool">&#9432;</button>
     </div>
   </div>
 
@@ -78,6 +92,24 @@
   <div id="editorOverlay" class="hidden">
     <textarea id="editorArea" spellcheck="false"></textarea>
     <div id="editorBar">^S Save &nbsp;&nbsp;&nbsp; ^X / Esc Cancel &nbsp;&nbsp;&nbsp; editing <span id="editorFile"></span></div>
+  </div>
+
+  <div id="infoBackdrop" class="hidden"></div>
+  <div id="infoPanel" class="hidden">
+    <button id="infoClose" class="overlay-close" title="Close">&times;</button>
+    <div class="info-title">commit-issues</div>
+    <div class="info-body">
+      <p>A fast, browser-based Git practice game — solve realistic git scenarios like staging, committing, branching, merging, resolving conflicts, stashing, and safely undoing commits with reset and revert, right in a terminal-style interface.</p>
+      <p>No install, no signup, no long tutorials — just quick, repeatable git command practice whenever you have a spare minute.</p>
+    </div>
+    <div class="info-credit">
+      Built by <b>Suryansh Singh</b>
+      <span class="info-links">
+        <a href="https://github.com/SxryxnshS5" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <span class="dot-sep">&middot;</span>
+        <a href="https://www.linkedin.com/in/suryansh-singh-ncl/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+      </span>
+    </div>
   </div>
 
   <div id="cookieBanner" class="hidden">
