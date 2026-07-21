@@ -241,6 +241,7 @@ html, body {
 #editorOverlay {
   position: absolute;
   inset: 0;
+  z-index: 10;
   background: #0d0d0d;
   display: flex;
   flex-direction: column;
@@ -271,3 +272,58 @@ html, body {
 #screen::-webkit-scrollbar { width: 10px; }
 #screen::-webkit-scrollbar-thumb { background: #2a2a2a; border-radius: 6px; }
 #screen::-webkit-scrollbar-track { background: transparent; }
+
+/* ---------- cookie consent banner ---------- */
+
+#cookieBanner {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 16px 24px;
+  background: #141414;
+  border-top: 1px solid #262626;
+  box-shadow: 0 -10px 28px rgba(0, 0, 0, 0.45);
+  font-family: inherit;
+}
+#cookieBanner.hidden { display: none; }
+
+#cookieText {
+  flex: 1 1 320px;
+  font-size: 12.5px;
+  line-height: 1.6;
+  color: #9a9a9a;
+}
+#cookieText b { color: var(--accent); }
+
+#cookieActions {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.cookie-btn {
+  font-family: inherit;
+  font-size: 12.5px;
+  padding: 9px 18px;
+  border-radius: 6px;
+  cursor: pointer;
+  border: 1px solid #333;
+  background: transparent;
+  color: #cfcfcf;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+.cookie-btn:hover { border-color: #666; }
+.cookie-btn.accept {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: #0d0d0d;
+  font-weight: 600;
+}
+.cookie-btn.accept:hover { filter: brightness(1.08); }

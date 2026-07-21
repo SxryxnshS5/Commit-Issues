@@ -402,6 +402,7 @@ function setupPanel(panelId, toggleId, storageKey) {
   } catch (e) {}
   setupPanel('leftPanel', 'leftToggle', 'commitIssuesLeftPanel');
   setupPanel('rightPanel', 'rightToggle', 'commitIssuesRightPanel');
+  initCookieConsent();
   loadLevel(0);
   inputEl.focus();
 })();
