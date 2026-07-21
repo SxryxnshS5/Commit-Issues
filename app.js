@@ -31,6 +31,13 @@ const editorOverlay = document.getElementById('editorOverlay');
 const editorArea = document.getElementById('editorArea');
 const editorFileEl = document.getElementById('editorFile');
 
+// ---------- analytics ----------
+// Fires a GA4 custom event if gtag is present. No-ops silently otherwise
+// (ad blockers, offline testing, etc. should never break gameplay).
+function track(name, params) {
+  try { if (typeof gtag === 'function') gtag('event', name, params || {}); } catch (e) {}
+}
+
 // ---------- rendering ----------
 
 function print(lines, cls) {
@@ -100,6 +107,7 @@ function loadLevel(i) {
   objectiveBarEl.innerHTML = `<b>OBJECTIVE</b> &nbsp;${escapeHtml(flattenObjective(level.objective))}`;
   updatePrompt();
   restartTimer();
+  track('level_started', { level_index: i + 1, level_title: level.title });
 }
 
 function flattenObjective(lines) {
@@ -153,6 +161,12 @@ function checkLevel() {
     const seconds = Math.floor((Date.now() - startTime) / 1000);
     print([`✓ solved in ${seconds}s`], 'ok');
     recordCompletion(levelIndex, seconds);
+    track('level_completed', {
+      level_index: levelIndex + 1,
+      level_title: level.title,
+      seconds: seconds,
+      hints_used: hintTier
+    });
     setTimeout(() => {
       if (levelIndex + 1 < LEVELS.length) loadLevel(levelIndex + 1);
       else showCampaignComplete();
@@ -173,6 +187,7 @@ function showCampaignComplete() {
     `# ${LEVELS.length}/${LEVELS.length} levels solved — total time ${totalTime}s`,
     '# type :restart to run it again from level 1.'
   ], 'ok');
+  track('campaign_completed', { total_time: totalTime });
 }
 
 // ---------- meta / util commands ----------
@@ -196,11 +211,13 @@ function handleMeta(raw) {
     const level = LEVELS[levelIndex];
     const idx = Math.min(hintTier, level.hints.length - 1);
     print([`hint: ${level.hints[idx]}`], 'hint');
+    track('hint_requested', { level_index: levelIndex + 1, tier: idx + 1 });
     if (hintTier < level.hints.length - 1) hintTier++;
     return true;
   }
   if (cmd === ':reset') {
     print(['# level reset.'], 'dim');
+    track('level_reset', { level_index: levelIndex + 1 });
     loadLevel(levelIndex);
     return true;
   }
@@ -226,6 +243,7 @@ function openThemePicker() {
     btn.onclick = () => {
       applyAccent(a.hex);
       print([`# accent set to ${a.name}`], 'dim');
+      track('theme_changed', { color: a.name });
       inputEl.focus();
     };
     row.appendChild(btn);
@@ -311,12 +329,14 @@ function handleInput(raw) {
     const result = runGit(state, tokens);
     const isErr = result.lines.some(l => /^(fatal:|error:|git:)/.test(l));
     print(result.lines, isErr ? 'err' : undefined);
+    if (isErr) track('command_error', { level_index: levelIndex + 1, command: trimmed.slice(0, 60) });
     updatePrompt();
     checkLevel();
     return;
   }
 
   print([`bash: ${first}: command not found`], 'err');
+  track('unknown_command', { level_index: levelIndex + 1, command: trimmed.slice(0, 60) });
 }
 
 // ---------- input element wiring ----------
