@@ -404,10 +404,19 @@ function runGit(state, tokens) {
     case 'revert': return cmdRevert(state, args);
     case 'log': return cmdLog(state, args);
     case 'diff': return { lines: ['(diff view is not available in this simulator yet)'] };
-    case undefined: return { lines: ['usage: git <command> [<args>]'] };
+    case undefined: return { lines: ['usage: git <command> [<args>]', "type ':help' to see the commands this simulator supports"] };
+    case 'help': case '--help':
+      return {
+        lines: [
+          'supported commands:',
+          '  status  add  commit  branch  checkout  switch  merge',
+          '  stash   reset  restore  revert  log',
+          "see the COMMANDS panel, or type ':help' for the full command list including nano/ls/cat"
+        ]
+      };
     case 'rebase': case 'cherry-pick': case 'reflog':
       return { lines: [`'${sub}' is not available in this training mode yet — coming in a future update!`] };
     default:
-      return { lines: [`git: '${sub}' is not a git command. See 'git --help'.`] };
+      return { lines: [`git: '${sub}' is not a git command. Type ':help' to see what's supported here.`] };
   }
 }

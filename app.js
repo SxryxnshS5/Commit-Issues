@@ -26,6 +26,7 @@ const inputEl = document.getElementById('cmdInput');
 const promptLabelEl = document.getElementById('promptLabel');
 const levelIndicatorEl = document.getElementById('levelIndicator');
 const timerEl = document.getElementById('timer');
+const objectiveBarEl = document.getElementById('objectiveBar');
 const editorOverlay = document.getElementById('editorOverlay');
 const editorArea = document.getElementById('editorArea');
 const editorFileEl = document.getElementById('editorFile');
@@ -96,8 +97,19 @@ function loadLevel(i) {
   if (i === 0) printFirstRunIntro();
   print([`# — ${level.title} —`], 'dim');
   print(level.objective, 'obj');
+  objectiveBarEl.innerHTML = `<b>OBJECTIVE</b> &nbsp;${escapeHtml(flattenObjective(level.objective))}`;
   updatePrompt();
   restartTimer();
+}
+
+function flattenObjective(lines) {
+  return lines.map(l => l.replace(/^#\s?/, '')).join('  ');
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 function printFirstRunIntro() {
@@ -255,8 +267,9 @@ function closeEditor(save) {
 }
 
 editorArea.addEventListener('keydown', (e) => {
-  if (e.ctrlKey && e.key.toLowerCase() === 's') { e.preventDefault(); closeEditor(true); }
-  else if (e.ctrlKey && e.key.toLowerCase() === 'x') { e.preventDefault(); closeEditor(false); }
+  const mod = e.ctrlKey || e.metaKey; // metaKey so Cmd+S/Cmd+X work on Mac too
+  if (mod && e.key.toLowerCase() === 's') { e.preventDefault(); closeEditor(true); }
+  else if (mod && e.key.toLowerCase() === 'x') { e.preventDefault(); closeEditor(false); }
   else if (e.key === 'Escape') { e.preventDefault(); closeEditor(false); }
 });
 
