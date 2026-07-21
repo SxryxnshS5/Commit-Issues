@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>commit issues — git practice</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<div id="terminal">
+  <div id="titlebar">
+    <div class="dots"><span class="dot red"></span><span class="dot yellow"></span><span class="dot green"></span></div>
+    <div class="titletext">commit-issues — zsh — 80x24</div>
+    <div class="meta">
+      <span id="levelIndicator">Level 1/10</span>
+      <span id="timer">00:00</span>
+      <button id="themeBtn" title="Change accent color">&#9680;</button>
+    </div>
+  </div>
+
+  <div id="screen"></div>
+
+  <div id="inputline">
+    <span class="prompt" id="promptLabel">~/commit-issues (main) $</span>
+    <input id="cmdInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+  </div>
+
+  <div id="editorOverlay" class="hidden">
+    <textarea id="editorArea" spellcheck="false"></textarea>
+    <div id="editorBar">^S Save &nbsp;&nbsp;&nbsp; ^X / Esc Cancel &nbsp;&nbsp;&nbsp; editing <span id="editorFile"></span></div>
+  </div>
+</div>
+
+<script src="engine.js"></script>
+<script src="levels.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
