@@ -18,11 +18,58 @@
     </div>
   </div>
 
-  <div id="screen"></div>
+  <div id="body">
+    <aside id="leftPanel" class="panel">
+      <div class="panel-header">
+        <span>COMMANDS</span>
+        <button class="panel-toggle" id="leftToggle" title="Show/hide">&minus;</button>
+      </div>
+      <div class="panel-content" id="commandList">
+        <div class="entry"><code>git status</code><span>show what's changed</span></div>
+        <div class="entry"><code>git add &lt;file&gt;</code><span>stage a file</span></div>
+        <div class="entry"><code>git add .</code><span>stage everything</span></div>
+        <div class="entry"><code>git commit -m ""</code><span>save a snapshot</span></div>
+        <div class="entry"><code>git branch &lt;name&gt;</code><span>create a branch</span></div>
+        <div class="entry"><code>git checkout -b &lt;name&gt;</code><span>create + switch</span></div>
+        <div class="entry"><code>git switch &lt;name&gt;</code><span>switch branches</span></div>
+        <div class="entry"><code>git merge &lt;name&gt;</code><span>merge a branch in</span></div>
+        <div class="entry"><code>git stash</code><span>shelve changes</span></div>
+        <div class="entry"><code>git stash pop</code><span>restore shelved work</span></div>
+        <div class="entry"><code>git reset &lt;file&gt;</code><span>unstage a file</span></div>
+        <div class="entry"><code>git reset --soft HEAD~1</code><span>undo commit, keep changes</span></div>
+        <div class="entry"><code>git revert &lt;ref&gt;</code><span>safely undo a commit</span></div>
+        <div class="entry"><code>git log --oneline</code><span>show history</span></div>
+        <div class="entry"><code>ls</code> / <code>cat &lt;file&gt;</code><span>look at files</span></div>
+        <div class="entry"><code>nano &lt;file&gt;</code><span>edit a file</span></div>
+      </div>
+    </aside>
 
-  <div id="inputline">
-    <span class="prompt" id="promptLabel">~/commit-issues (main) $</span>
-    <input id="cmdInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" />
+    <div id="center">
+      <div id="screen"></div>
+
+      <div id="inputline">
+        <span class="prompt" id="promptLabel">~/commit-issues (main) $</span>
+        <input id="cmdInput" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="type a git command and press Enter…" />
+      </div>
+      <div id="legend"><b>:help</b> commands &nbsp;·&nbsp; <b>:hint</b> stuck? &nbsp;·&nbsp; <b>:theme</b> colors &nbsp;·&nbsp; <b>:reset</b> restart level</div>
+    </div>
+
+    <aside id="rightPanel" class="panel">
+      <div class="panel-header">
+        <span>TIPS</span>
+        <button class="panel-toggle" id="rightToggle" title="Show/hide">&minus;</button>
+      </div>
+      <div class="panel-content">
+        <div class="tip">Modified a file? You need to <code>git add</code> it before you can commit it.</div>
+        <div class="tip">Staged the wrong file? <code>git reset &lt;file&gt;</code> unstages it — your edit is still there.</div>
+        <div class="tip">Uncommitted changes blocking a checkout? Stash them first with <code>git stash</code>.</div>
+        <div class="tip">Merge conflict? Find the <code>&lt;&lt;&lt;&lt;&lt;&lt;&lt;</code> markers, edit them out, then add + commit.</div>
+        <div class="tip">Already shared a bad commit? Use <code>git revert</code>, not reset — it doesn't rewrite history.</div>
+        <div class="tip"><code>git status</code> is always safe to run. Use it whenever you're unsure.</div>
+        <div class="tip"><code>git log --oneline</code> gives you a quick map of recent commits.</div>
+        <div class="tip">Stuck on the current objective? Type <code>:hint</code> for a nudge.</div>
+      </div>
+    </aside>
   </div>
 
   <div id="editorOverlay" class="hidden">

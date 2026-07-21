@@ -93,11 +93,24 @@ function loadLevel(i) {
   startTime = Date.now();
   screenEl.innerHTML = '';
   levelIndicatorEl.textContent = `Level ${i + 1}/${LEVELS.length}`;
-  if (i === 0) print(['# commit-issues — type real git commands to solve each scenario.', "# :help for commands · :hint if you're stuck · :theme to change color"], 'dim');
+  if (i === 0) printFirstRunIntro();
   print([`# — ${level.title} —`], 'dim');
   print(level.objective, 'obj');
   updatePrompt();
   restartTimer();
+}
+
+function printFirstRunIntro() {
+  let seen = false;
+  try { seen = localStorage.getItem('commitIssuesSeenIntro') === '1'; } catch (e) {}
+  if (seen) return;
+  print([
+    "# welcome — this is a simulated terminal. Real git commands, real behavior.",
+    '# read the objective below, type a command in the box, press Enter.',
+    '# not sure where to start? "git status" is always a safe first move.',
+    ''
+  ], 'dim');
+  try { localStorage.setItem('commitIssuesSeenIntro', '1'); } catch (e) {}
 }
 
 function restartTimer() {
@@ -321,11 +334,31 @@ inputEl.addEventListener('keydown', (e) => {
   }
 });
 
-document.getElementById('terminal').addEventListener('click', () => {
+document.getElementById('terminal').addEventListener('click', (e) => {
+  if (e.target.closest('.panel')) return;
   if (editorOverlay.classList.contains('hidden')) inputEl.focus();
 });
 
 document.getElementById('themeBtn').addEventListener('click', () => { openThemePicker(); inputEl.focus(); });
+
+// ---------- side panels ----------
+
+function setupPanel(panelId, toggleId, storageKey) {
+  const panel = document.getElementById(panelId);
+  const btn = document.getElementById(toggleId);
+  let open = true;
+  try {
+    const saved = localStorage.getItem(storageKey);
+    if (saved) open = saved === 'open';
+  } catch (e) {}
+  apply(open);
+  btn.addEventListener('click', () => apply(panel.classList.contains('collapsed')));
+  function apply(nowOpen) {
+    panel.classList.toggle('collapsed', !nowOpen);
+    btn.innerHTML = nowOpen ? '&minus;' : '+';
+    try { localStorage.setItem(storageKey, nowOpen ? 'open' : 'collapsed'); } catch (e) {}
+  }
+}
 
 // ---------- boot ----------
 
@@ -334,6 +367,8 @@ document.getElementById('themeBtn').addEventListener('click', () => { openThemeP
     const savedAccent = localStorage.getItem('commitIssuesAccent');
     if (savedAccent) applyAccent(savedAccent);
   } catch (e) {}
+  setupPanel('leftPanel', 'leftToggle', 'commitIssuesLeftPanel');
+  setupPanel('rightPanel', 'rightToggle', 'commitIssuesRightPanel');
   loadLevel(0);
   inputEl.focus();
 })();
