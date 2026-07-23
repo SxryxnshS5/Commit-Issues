@@ -1,4 +1,4 @@
-// analytics.js — nothing in here runs until the visitor accepts the cookie banner.
+// analytics.js - nothing in here runs until the visitor accepts the cookie banner.
 // Keeping this in its own file (rather than inline in <head>) means the whole
 // tracking surface can be read, audited, or deleted in one place.
 

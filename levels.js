@@ -1,7 +1,7 @@
 // levels.js
 // Each level is self-contained: a fresh repo state, an objective, a check(state)
 // predicate that accepts ANY valid command path to the correct end state, and
-// tiered hints. Levels do not chain into each other on purpose — each one boots
+// tiered hints. Levels do not chain into each other on purpose - each one boots
 // a clean scenario so a bad move never permanently blocks progress (":reset" also
 // reboots the current level instantly).
 
@@ -10,7 +10,7 @@ const LEVELS = [
     title: 'Stage one file',
     objective: [
       '# You modified login.py and utils.py on main.',
-      '# Stage ONLY login.py — leave utils.py unstaged.'
+      '# Stage ONLY login.py - leave utils.py unstaged.'
     ],
     setup() {
       const s = freshState();
@@ -54,7 +54,7 @@ const LEVELS = [
       return c && c.tree['app.py'] === 'print("v2")\n' && c.parents.length === 1;
     },
     hints: [
-      'The change is already staged — it just needs to become a commit.',
+      'The change is already staged - it just needs to become a commit.',
       'git commit takes a -m flag with your message.',
       'git commit -m "update app.py"'
     ]
@@ -77,7 +77,7 @@ const LEVELS = [
       return state.head.type === 'branch' && state.head.name === 'feature/search' && !!state.branches['feature/search'];
     },
     hints: [
-      'You can do this in one command or two — either works.',
+      'You can do this in one command or two - either works.',
       'git checkout -b <name> creates AND switches in one step.',
       'git checkout -b feature/search'
     ]
@@ -86,7 +86,7 @@ const LEVELS = [
     title: 'Stash before switching',
     objective: [
       '# You have uncommitted changes to config.py on main.',
-      '# The hotfix branch also touches config.py — a plain checkout',
+      '# The hotfix branch also touches config.py - a plain checkout',
       '# will be blocked. Switch to hotfix without losing your work.'
     ],
     setup() {
@@ -128,7 +128,7 @@ const LEVELS = [
       return state.workdir['notes.txt'] === 'v1\nwork in progress\n' && state.head.name === 'main';
     },
     hints: [
-      'There\'s a stash entry waiting — check with "git stash list".',
+      'There\'s a stash entry waiting - check with "git stash list".',
       'Popping a stash re-applies it and removes it from the list.',
       'git stash pop'
     ]
@@ -186,7 +186,7 @@ const LEVELS = [
       return state.head.name === 'main' && !state.merge && !content.includes('<<<<<<<') && c && c.parents.length === 2;
     },
     hints: [
-      'Start the merge — git will tell you exactly which file conflicted.',
+      'Start the merge - git will tell you exactly which file conflicted.',
       'Open the conflicted file, remove the <<<<<<< / ======= / >>>>>>> markers and pick the content you want, then stage and commit.',
       'git merge feature/dark-mode, then nano settings.py, git add settings.py, git commit -m "resolve conflict"'
     ]
@@ -195,7 +195,7 @@ const LEVELS = [
     title: 'Unstage a file',
     objective: [
       '# You ran "git add ." but b.py isn\'t ready yet.',
-      '# Unstage b.py — keep the edit, just don\'t stage it.'
+      '# Unstage b.py - keep the edit, just don\'t stage it.'
     ],
     setup() {
       const s = freshState();
@@ -210,7 +210,7 @@ const LEVELS = [
       return state.index['a.py'] === '2\n' && state.index['b.py'] === headTree['b.py'] && state.workdir['b.py'] === '2\n';
     },
     hints: [
-      'a.py should stay staged — only touch b.py.',
+      'a.py should stay staged - only touch b.py.',
       'git reset <file> (or git restore --staged <file>) removes a file from the staging area without discarding your edit.',
       'git reset b.py'
     ]
@@ -237,7 +237,7 @@ const LEVELS = [
       return c && c.message === 'Initial commit' && state.index['server.py'] === 'PORT = 9000\n';
     },
     hints: [
-      'You want to move the branch pointer back one commit — without touching the staging area.',
+      'You want to move the branch pointer back one commit - without touching the staging area.',
       'git reset has three modes: --soft, --mixed (default), --hard. Only one of them keeps the change staged.',
       'git reset --soft HEAD~1'
     ]
@@ -265,7 +265,7 @@ const LEVELS = [
       return c && c.message.startsWith('Revert') && c.parents.length === 1 && headTree['payment.py'] === 'def charge(): pass\n';
     },
     hints: [
-      'Resetting would rewrite history your teammates already have — that\'s not safe here.',
+      'Resetting would rewrite history your teammates already have - that\'s not safe here.',
       'There\'s a command that undoes a commit by making a new, opposite commit.',
       'git revert HEAD'
     ]

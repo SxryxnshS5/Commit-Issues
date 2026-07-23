@@ -1,4 +1,4 @@
-// app.js — terminal UI wiring: rendering, input handling, theming, stats, editor overlay.
+// app.js - terminal UI wiring: rendering, input handling, theming, stats, editor overlay.
 
 const ACCENTS = [
   { name: 'green', hex: '#33ff99' },
@@ -27,6 +27,7 @@ const promptLabelEl = document.getElementById('promptLabel');
 const levelIndicatorEl = document.getElementById('levelIndicator');
 const timerEl = document.getElementById('timer');
 const objectiveBarEl = document.getElementById('objectiveBar');
+const terminalEl = document.getElementById('terminal');
 const editorOverlay = document.getElementById('editorOverlay');
 const editorArea = document.getElementById('editorArea');
 const editorFileEl = document.getElementById('editorFile');
@@ -102,7 +103,7 @@ function loadLevel(i) {
   screenEl.innerHTML = '';
   levelIndicatorEl.textContent = `Level ${i + 1}/${LEVELS.length}`;
   if (i === 0) printFirstRunIntro();
-  print([`# — ${level.title} —`], 'dim');
+  print([`# - ${level.title} -`], 'dim');
   print(level.objective, 'obj');
   objectiveBarEl.innerHTML = `<b>OBJECTIVE</b> &nbsp;${escapeHtml(flattenObjective(level.objective))}`;
   updatePrompt();
@@ -125,7 +126,7 @@ function printFirstRunIntro() {
   try { seen = localStorage.getItem('commitIssuesSeenIntro') === '1'; } catch (e) {}
   if (seen) return;
   print([
-    "# welcome — this is a simulated terminal. Real git commands, real behavior.",
+    "# welcome - this is a simulated terminal. Real git commands, real behavior.",
     '# read the objective below, type a command in the box, press Enter.',
     '# not sure where to start? "git status" is always a safe first move.',
     ''
@@ -151,7 +152,20 @@ function recordCompletion(i, seconds) {
     if (!data.completed.includes(i)) data.completed.push(i);
     data.times[i] = seconds;
     localStorage.setItem('commitIssuesProgress', JSON.stringify(data));
-  } catch (e) { /* localStorage unavailable — stats just won't persist */ }
+  } catch (e) { /* localStorage unavailable - stats just won't persist */ }
+}
+
+function playLevelUpEffect() {
+  levelIndicatorEl.classList.remove('level-pulse');
+  terminalEl.classList.remove('level-flash');
+  // force reflow so the animation replays even if triggered again quickly
+  void levelIndicatorEl.offsetWidth;
+  levelIndicatorEl.classList.add('level-pulse');
+  terminalEl.classList.add('level-flash');
+  setTimeout(() => {
+    levelIndicatorEl.classList.remove('level-pulse');
+    terminalEl.classList.remove('level-flash');
+  }, 800);
 }
 
 function checkLevel() {
@@ -160,6 +174,7 @@ function checkLevel() {
     if (timerHandle) clearInterval(timerHandle);
     const seconds = Math.floor((Date.now() - startTime) / 1000);
     print([`✓ solved in ${seconds}s`], 'ok');
+    playLevelUpEffect();
     recordCompletion(levelIndex, seconds);
     track('level_completed', {
       level_index: levelIndex + 1,
@@ -184,7 +199,7 @@ function showCampaignComplete() {
   } catch (e) {}
   print([
     '# campaign complete.',
-    `# ${LEVELS.length}/${LEVELS.length} levels solved — total time ${totalTime}s`,
+    `# ${LEVELS.length}/${LEVELS.length} levels solved - total time ${totalTime}s`,
     '# type :restart to run it again from level 1.'
   ], 'ok');
   track('campaign_completed', { total_time: totalTime });
@@ -196,14 +211,14 @@ function handleMeta(raw) {
   const cmd = raw.trim();
   if (cmd === ':help') {
     print([
-      'git <command>      — status, add, commit, branch, checkout, switch, merge, stash, reset, restore, revert, log',
-      'ls / cat <file>    — inspect the working directory',
-      'nano|vim|edit <f>  — edit a file (used to resolve conflicts)',
-      'clear              — clear the screen',
-      ':hint              — get a progressively more specific hint',
-      ':reset             — restart the current level',
-      ':theme             — change the accent color',
-      ':restart           — restart the whole campaign'
+      'git <command>      - status, add, commit, branch, checkout, switch, merge, stash, reset, restore, revert, log',
+      'ls / cat <file>    - inspect the working directory',
+      'nano|vim|edit <f>  - edit a file (used to resolve conflicts)',
+      'clear              - clear the screen',
+      ':hint              - get a progressively more specific hint',
+      ':reset             - restart the current level',
+      ':theme             - change the accent color',
+      ':restart           - restart the whole campaign'
     ], 'dim');
     return true;
   }
@@ -444,7 +459,7 @@ function loadGitHubStars() {
         try { localStorage.setItem('commitIssuesStars', formatted); } catch (e) {}
       }
     })
-    .catch(() => { /* offline, rate-limited, or blocked — badge still links out fine without a count */ });
+    .catch(() => { /* offline, rate-limited, or blocked - badge still links out fine without a count */ });
 }
 
 // ---------- boot ----------

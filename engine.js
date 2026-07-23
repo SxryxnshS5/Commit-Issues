@@ -141,7 +141,7 @@ function cmdAdd(state, args) {
 function cmdCommit(state, args) {
   const mIdx = args.indexOf('-m');
   if (mIdx === -1 || args[mIdx + 1] === undefined) {
-    return { lines: ["Aborting commit due to empty commit message.", 'hint: this simulator needs a message — try: git commit -m "your message"'] };
+    return { lines: ["Aborting commit due to empty commit message.", 'hint: this simulator needs a message - try: git commit -m "your message"'] };
   }
   const message = args[mIdx + 1];
   const headId = getHeadCommitId(state);
@@ -415,7 +415,7 @@ function runGit(state, tokens) {
         ]
       };
     case 'rebase': case 'cherry-pick': case 'reflog':
-      return { lines: [`'${sub}' is not available in this training mode yet — coming in a future update!`] };
+      return { lines: [`'${sub}' is not available in this training mode yet - coming in a future update!`] };
     default:
       return { lines: [`git: '${sub}' is not a git command. Type ':help' to see what's supported here.`] };
   }
