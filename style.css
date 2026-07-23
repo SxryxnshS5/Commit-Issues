@@ -249,7 +249,25 @@ html, body {
 .line.echo { color: #eaeaea; }
 .line.hint { color: #ffb454; }
 
-.theme-row { display: flex; gap: 8px; padding: 6px 0 2px; }
+.theme-wrap { position: relative; }
+
+#themePopover {
+  position: absolute;
+  top: calc(100% + 10px);
+  right: 0;
+  z-index: 25;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  width: 156px;
+  padding: 12px;
+  background: #161616;
+  border: 1px solid #2b2b2b;
+  border-radius: 10px;
+  box-shadow: 0 14px 36px rgba(0, 0, 0, 0.5);
+}
+#themePopover.hidden { display: none; }
+
 .swatch {
   width: 22px; height: 22px; border-radius: 4px;
   border: 1px solid #3a3a3a; cursor: pointer; padding: 0;

@@ -241,15 +241,28 @@ function handleMeta(raw) {
     return true;
   }
   if (cmd === ':theme') {
-    openThemePicker();
+    toggleThemePopover();
     return true;
   }
   return false;
 }
 
-function openThemePicker() {
-  const row = document.createElement('div');
-  row.className = 'line theme-row';
+// ---------- theme popover ----------
+
+function toggleThemePopover(forceOpen) {
+  const pop = document.getElementById('themePopover');
+  if (!pop) return;
+  const shouldOpen = forceOpen !== undefined ? forceOpen : pop.classList.contains('hidden');
+  if (shouldOpen) {
+    renderThemeSwatches(pop);
+    pop.classList.remove('hidden');
+  } else {
+    pop.classList.add('hidden');
+  }
+}
+
+function renderThemeSwatches(pop) {
+  pop.innerHTML = '';
   ACCENTS.forEach(a => {
     const btn = document.createElement('button');
     btn.className = 'swatch';
@@ -259,12 +272,11 @@ function openThemePicker() {
       applyAccent(a.hex);
       print([`# accent set to ${a.name}`], 'dim');
       track('theme_changed', { color: a.name });
+      toggleThemePopover(false);
       inputEl.focus();
     };
-    row.appendChild(btn);
+    pop.appendChild(btn);
   });
-  screenEl.appendChild(row);
-  screenEl.scrollTop = screenEl.scrollHeight;
 }
 
 function applyAccent(hex) {
@@ -387,7 +399,24 @@ document.getElementById('terminal').addEventListener('click', (e) => {
   if (editorOverlay.classList.contains('hidden')) inputEl.focus();
 });
 
-document.getElementById('themeBtn').addEventListener('click', () => { openThemePicker(); inputEl.focus(); });
+document.getElementById('themeBtn').addEventListener('click', (e) => {
+  e.stopPropagation();
+  toggleThemePopover();
+});
+
+document.addEventListener('click', (e) => {
+  const pop = document.getElementById('themePopover');
+  if (!pop || pop.classList.contains('hidden')) return;
+  if (!e.target.closest('.theme-wrap')) toggleThemePopover(false);
+});
+
+document.addEventListener('keydown', (e) => {
+  const pop = document.getElementById('themePopover');
+  if (e.key === 'Escape' && pop && !pop.classList.contains('hidden')) {
+    toggleThemePopover(false);
+    inputEl.focus();
+  }
+});
 
 // ---------- side panels ----------
 
